@@ -1,18 +1,17 @@
-// import initialStoreItems from '..store-items'
-// import StoreItem from './StoreItem'
+import StoreItem from './StoreItem'
 
-function StoreList () {
-    // const [store, setStore] = useState([])
-    return (
-        <ul className="item-list store--item-list">
-        {/* {initialStoreItems.map((storeItem, index) => (
-            <StoreItem
-            key={index}
-            storeItem={storeItem}/>
-        ))} */}
-      {/* Write some code here... */}
-        </ul>
-    )
+function StoreList(props) {
+  return (
+    <ul className="item-list store--item-list">
+      {props.store.map((storeItem, index) => (
+        <StoreItem
+          key={index}
+          storeItem={storeItem}
+          addToCart={props.addToCart}
+        />
+      ))}
+    </ul>
+  )
 }
 
 export default StoreList

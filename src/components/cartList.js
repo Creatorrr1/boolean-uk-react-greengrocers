@@ -1,13 +1,18 @@
-function CartList () {
-    // const [cart, setCart] = useState([])
+import CartItem from './cartItem'
+// import initialStoreItems from '..store-items'
 
-    return (
-        <div className="cart--item-list-container">
-        <ul className="item-list cart--item-list">
-          {/* Wrtite some code here... */}
-        </ul>
-        </div>
-    )
+function CartList(props) {
+  // const [cart, setCart] = useState([])
+
+  return (
+    <div className="cart--item-list-container">
+      <ul className="item-list cart--item-list">
+        {props.cart.map((cartItem, index) => (
+          <CartItem key={index} cartItem={cartItem} />
+        ))}
+      </ul>
+    </div>
+  )
 }
 
-export default CartList 
+export default CartList
