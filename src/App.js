@@ -25,16 +25,45 @@ export default function App() {
   const [store] = useState(initialStoreItems)
   const [cart, setCart] = useState([])
 
+  const findItem = cartItem => cart.find(item => cartItem.id === item.id)
+
   const addToCart = storeItem => {
-    setCart([...cart, { storeItem, quantity: cart.length + 1 }])
+    // finds the item then alters its quantity but adds to cart if not found
+    // to not change everything in the cart the other items needs to be filtered
+    // then add the changed item and the filtered items
+    // setCart([...cart, { storeItem, quantity: cart.length + 1 }])
+    if (!findItem(storeItem.id)) {
+      setCart([...cart, { storeItem, quantity: 1 }])
+    }
     // console.log(storeItem)
+  }
+
+  const increaseQuantity = cartItem => {
+    // const foundItem = cart.find(item => cartItem.id === item.id)
+    const foundItem = findItem(cartItem.id)
+    const notMatchingItems = cart.filter(item => cart.id !== item.id)
+    const increasedItem = { ...foundItem, quantity: foundItem.id++ }
+    setCart([...cart, { ...increasedItem, notMatchingItems }])
+  }
+
+  const reduceQuantity = cartItem => {
+    // const foundItem = cart.find(item => cartItem.id === item.id)
+    const foundItem = findItem(cartItem.id)
+    const notMatchingItems = cart.filter(item => cart.id !== item.id)
+    const decreasedItem = { ...foundItem, quantity: foundItem.id-- }
+    setCart([...cart, { ...decreasedItem, notMatchingItems }])
   }
 
   console.log(cart)
 
   return (
     <>
-      <Header store={store} addToCart={addToCart} />
+      <Header
+        store={store}
+        addToCart={addToCart}
+        increaseQuantity={increaseQuantity}
+        reduceQuantity={reduceQuantity}
+      />
 
       <Main cart={cart} />
       <div>

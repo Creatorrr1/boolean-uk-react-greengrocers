@@ -8,7 +8,12 @@ function CartList(props) {
     <div className="cart--item-list-container">
       <ul className="item-list cart--item-list">
         {props.cart.map((cartItem, index) => (
-          <CartItem key={index} cartItem={cartItem} />
+          <CartItem
+            key={index}
+            cartItem={cartItem}
+            increaseQuantity={props.increaseQuantity}
+            reduceQuantity={props.reduceQuantity}
+          />
         ))}
       </ul>
     </div>

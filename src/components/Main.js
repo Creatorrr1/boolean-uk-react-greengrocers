@@ -4,7 +4,11 @@ function Main(props) {
   return (
     <main id="cart">
       <h2>Your Cart</h2>
-      <CartList cart={props.cart} />
+      <CartList
+        cart={props.cart}
+        increaseQuantity={props.increaseQuantity}
+        reduceQuantity={props.reduceQuantity}
+      />
       <div className="total-section">
         <div>
           <h3>Total</h3>
