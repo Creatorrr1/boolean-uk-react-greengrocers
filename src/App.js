@@ -18,43 +18,51 @@ Here's what a store item should look like
 What should a cart item look like? 🤔
 */
 
-console.log(initialStoreItems)
-
 export default function App() {
-  // Setup state here...
   const [store] = useState(initialStoreItems)
   const [cart, setCart] = useState([])
 
-  const findItem = cartItem => cart.find(item => cartItem.id === item.id)
+  const findItemInCart = storeItem =>
+    cart.find(cartItem => cartItem.storeItem === storeItem)
 
   const addToCart = storeItem => {
-    // finds the item then alters its quantity but adds to cart if not found
-    // to not change everything in the cart the other items needs to be filtered
-    // then add the changed item and the filtered items
-    // setCart([...cart, { storeItem, quantity: cart.length + 1 }])
-    if (!findItem(storeItem.id)) {
+    const itemInCart = findItemInCart(storeItem)
+    if (itemInCart === undefined) {
       setCart([...cart, { storeItem, quantity: 1 }])
+    } else {
+      itemInCart.quantity = itemInCart.quantity + 1
+      setCart([...cart])
     }
-    // console.log(storeItem)
   }
 
   const increaseQuantity = cartItem => {
-    // const foundItem = cart.find(item => cartItem.id === item.id)
-    const foundItem = findItem(cartItem.id)
-    const notMatchingItems = cart.filter(item => cart.id !== item.id)
-    const increasedItem = { ...foundItem, quantity: foundItem.id++ }
-    setCart([...cart, { ...increasedItem, notMatchingItems }])
+    cartItem.quantity = cartItem.quantity + 1
+    setCart([...cart])
   }
 
   const reduceQuantity = cartItem => {
-    // const foundItem = cart.find(item => cartItem.id === item.id)
-    const foundItem = findItem(cartItem.id)
-    const notMatchingItems = cart.filter(item => cart.id !== item.id)
-    const decreasedItem = { ...foundItem, quantity: foundItem.id-- }
-    setCart([...cart, { ...decreasedItem, notMatchingItems }])
+    cartItem.quantity = cartItem.quantity - 1
+    if (cartItem.quantity > 0) {
+      setCart([...cart])
+    } else {
+      const newCart = cart.filter(item => item.storeItem !== cartItem.storeItem)
+      setCart(newCart)
+    }
   }
 
-  console.log(cart)
+  function calculateTotal() {
+    let total = 0
+
+    for (let i = 0; i < cart.length; i++) {
+      let cartItem = cart[i]
+      let price = cartItem.storeItem.price * cartItem.quantity
+      total = total + price
+    }
+
+    return total.toFixed(2)
+  }
+
+  // console.log(cart)
 
   return (
     <>
@@ -65,7 +73,12 @@ export default function App() {
         reduceQuantity={reduceQuantity}
       />
 
-      <Main cart={cart} />
+      <Main
+        cart={cart}
+        increaseQuantity={increaseQuantity}
+        reduceQuantity={reduceQuantity}
+        calculateTotal={calculateTotal}
+      />
       <div>
         Icons made by
         <a
